@@ -8,7 +8,8 @@ import json
 import re
 from PyPDF2 import PdfFileReader
 
-from .PrintUtil import *
+from .dprint import dprint
+from .config import _globals
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -21,10 +22,9 @@ TAGS = [tag + '_TAG' for tag in ['JSON', 'COLUMNS', 'FIGURES', 'WARNINGS', 'CMD'
 
 class HTMLBuilder():
 
-    def __init__(self, binnedContigs, dRep_cmd, dRep_params, dRep_workDir, html_dir):
-        self.binnedContigs = binnedContigs
+    def __init__(self, binnedContigs_l, dRep_cmd, dRep_workDir, html_dir):
+        self.binnedContigs_l = binnedContigs_l
         self.dRep_cmd = dRep_cmd
-        self.dRep_params = dRep_params
         self.dRep_workDir = dRep_workDir
         self.html_dir = html_dir
         self.html_path = os.path.join(html_dir, 'dRep_dereplicate_report.html')
@@ -56,7 +56,7 @@ class HTMLBuilder():
     def _build_summary(self):
         '''Build data frame from dRep output'''
         
-        ignoreGenomeQuality = '--ignoreGenomeQuality' in self.dRep_params
+        ignoreGenomeQuality = '--ignoreGenomeQuality' in self.dRep_cmd
         
 
         ###
@@ -76,10 +76,10 @@ class HTMLBuilder():
         
         smmr = pd.DataFrame(columns=columns)
 
-        for binnedContigs in self.binnedContigs:
-            for bin_name in binnedContigs.bin_name_list:
+        for binnedContigs in self.binnedContigs_l:
+            for bin_name in binnedContigs.original_bin_name_list:
 
-                smmr.loc[len(smmr)] = [binnedContigs.name, bin_name, binnedContigs.transform_binName(bin_name)] + [np.nan] * (len(columns) - len(names))
+                smmr.loc[len(smmr)] = [binnedContigs.name, bin_name, binnedContigs.transform_bin_name(bin_name)] + [np.nan] * (len(columns) - len(names))
 
         ###
         ### Insert genome attribute info
@@ -95,7 +95,7 @@ class HTMLBuilder():
 
         # get custom stats for each BinnedContigs and concat with file name as index
         df_stats_l = []
-        for binnedContigs in self.binnedContigs:
+        for binnedContigs in self.binnedContigs_l:
             df_stats = pd.DataFrame.from_dict(binnedContigs.stats['bin_stats'], orient='index')
             df_stats_l.append(df_stats)
 

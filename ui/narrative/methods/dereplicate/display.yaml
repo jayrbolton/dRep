@@ -182,7 +182,7 @@ parameter-groups:
 
 
 description : |
-
+    <p><i>Below is an original description of dRep from <a href="https://drep.readthedocs.io/en/latest/index.html">Read the Docs</a> ...</i></p>
     <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
     <p>dRep is a python program which performs rapid pair-wise comparison of genome sets. One of it’s major purposes is for genome de-replication, but it can do a lot more.</p>
     <p>The publication is available at <a class="reference external" href="http://www.nature.com/ismej/journal/vaop/ncurrent/full/ismej2017126a.html">ISME</a> and an open-source pre-print is available on <a class="reference external" href="https://doi.org/10.1101/108142">bioRxiv</a>.</p>
@@ -305,20 +305,15 @@ description : |
 publications:
 
     -
-
         display-text: |
             <a href="https://github.com/MrOlm/drep">Github</a>
     -
-
         display-text: |
             <a href="https://drep.readthedocs.io/en/latest/index.html">Read the Docs</a>
     -
-
         display-text: |
             <a href="https://www.nature.com/articles/ismej2017126">Olm, M., Brown, C., Brooks, B. <i>et al</i>. dRep: a tool for fast and accurate genomic comparisons that enables improved genome recovery from metagenomes through de-replication. <i>ISME J</i> <b>11</b>, 2864–2868 (2017).</a>
-
     -
-
         display-text: |
             <a href="https://doi.org/10.1101/108142">bioRxiv</a>
 

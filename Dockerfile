@@ -8,93 +8,97 @@ MAINTAINER Sumin Wang <suminwang@lbl.gov>
 
 
 
-WORKDIR /kb/module
+WORKDIR /opt
+RUN mkdir /opt/bin
+
+ENV PATH="${PATH}:/opt/bin"
+
 
 
 RUN apt-get update
 RUN pip install --upgrade pip==19.3.1
 
 
+# dRep
 RUN pip install drep==2.4.2
 
 
+# MASH
 RUN curl --location https://github.com/marbl/Mash/releases/download/v2.2/mash-Linux64-v2.2.tar > mash.tar && \
     tar xf mash.tar && \ 
-    mv mash-Linux64-v2.2/mash /usr/local/bin/ && \
-    rm -r mash*
+    rm -r mash.tar
+
+ENV PATH="${PATH}:/opt/mash-Linux64-v2.2"
 
 
+# Prodigal
 RUN apt-get install --yes gcc=4:6.3.0-4 && \
     apt-get install --yes --reinstall zlibc=0.9k-4.3 zlib1g=1:1.2.8.dfsg-5 zlib1g-dev=1:1.2.8.dfsg-5
 
-# dRep says v2.6.3 (2016) confirmed works, on its wiki
-RUN git clone https://github.com/hyattpd/Prodigal && \
-    cd Prodigal/ && \
-    git checkout a78ed3f46f46dd51d6fca47a8b49e809342e45cd && \
-    make install && \
-    cd .. && \
-    rm -rf Prodigal
+RUN curl --location https://github.com/hyattpd/Prodigal/releases/download/v2.6.3/prodigal.linux > prodigal.linux && \
+chmod +x prodigal.linux && \
+mv prodigal.linux /opt/bin/prodigal
 
 
+
+# pplacer
 RUN curl --location https://github.com/matsen/pplacer/releases/download/v1.1.alpha17/pplacer-Linux-v1.1.alpha17.zip > pplacer.zip && \
     unzip pplacer.zip && \
-    mv pplacer-Linux-v1.1.alpha17 /usr/local/bin/ && \
-    rm -r pplacer*
+    rm pplacer.zip
 
-ENV PATH="${PATH}:/usr/local/bin/pplacer-Linux-v1.1.alpha17"
+ENV PATH="${PATH}:/opt/pplacer-Linux-v1.1.alpha17"
 
 
+
+# HMMER
 RUN apt-get install --yes hmmer=3.1b2+dfsg-5
 
 
+
+# CheckM
 RUN apt-get install --yes libbz2-dev=1.0.6-8.1 liblzma-dev=5.2.2-1.2+b1
 
 RUN pip install checkm-genome==1.1.1
 
-# just to get dataRoot pointing to /data/CHECKM_DATA without a 'Permission denied' error
-# does this work when re-caching Dockerfile on narrative without running refdata scripts? (yes, it will create /data/CHECKM_DATA)
-RUN checkm data setRoot /data/CHECKM_DATA && \
-    echo "ls -a /data/CHECKM_DATA" && ls -a /data/CHECKM_DATA && \
-    echo "cat /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG" && cat /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG
 
 
-RUN apt-get install g++=4:6.3.0-4 csh=20110502-2.2+b1 --yes
+# ANIcalculator
+RUN curl --location https://ani.jgi.doe.gov/download_files/ANIcalculator_v1.tgz > ANIcalculator_v1.tgz && \
+tar vxzf ANIcalculator_v1.tgz && \
+rm ANIcalculator_v1.tgz
+
+ENV PATH="${PATH}:/opt/ANIcalculator_v1"
+
+
+
+# MUMmer
+RUN apt-get install --yes g++=4:6.3.0-4 csh=20110502-2.2+b1
 
 RUN curl --location https://sourceforge.net/projects/mummer/files/mummer/3.23/MUMmer3.23.tar.gz/download > mummer3.23.tar.gz && \
 tar -vxzf mummer3.23.tar.gz  && \
-mv MUMmer3.23 /usr/local/bin && \
 rm mummer3.23.tar.gz && \
-cd /usr/local/bin/MUMmer3.23/ && \
+cd /opt/MUMmer3.23/ && \
 make check && \
 make install
 
-ENV PATH="${PATH}:/usr/local/bin/MUMmer3.23"
+ENV PATH="${PATH}:/opt/MUMmer3.23"
 
 
-RUN curl --location https://ani.jgi.doe.gov/download_files/ANIcalculator_v1.tgz > ANIcalculator_v1.tgz && \
-tar vxzf ANIcalculator_v1.tgz && \
-rm ANIcalculator_v1.tgz && \
-mv ANIcalculator_v1 /usr/local/bin
 
-ENV PATH="${PATH}:/usr/local/bin/ANIcalculator_v1"
-
-
-RUN curl --location ftp://ftp.ccb.jhu.edu/pub/infphilo/centrifuge/downloads/centrifuge-1.0.3-beta-Linux_x86_64.zip > centrifuge.zip && \
-unzip centrifuge.zip && \
-rm centrifuge.zip && \
-mv centrifuge-1.0.3-beta/ /usr/local/bin/
-
-ENV PATH="${PATH}:/usr/local/bin/centrifuge-1.0.3-beta"
+# CheckM reference data
+# just to get reference data root pointing to right path
+# may create folders - ignore
+# may have error messages - ignore
+RUN checkm data setRoot /data/CHECKM_DATA
 
 
-ENV PYTHONUNBUFFERED=0
 
+ENV PYTHONUNBUFFERED=True
 
-RUN pip install pypdf2
+# for sklearn
+ENV PYTHONWARNINGS=ignore
 
-
-# Utilities for manual inspection of Docker container
-RUN apt-get install --yes vim tree
+RUN pip install pypdf2 dotmap
 
 
 # -----------------------------------------
