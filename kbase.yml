@@ -1,0 +1,18 @@
+module-name:
+    dRep
+
+module-description:
+    Dereplicate genomes using ANI
+
+service-language:
+    python
+
+module-version:
+    1.0.0
+
+data-version:
+    0.0.3
+
+owners:
+    [suminw]
+

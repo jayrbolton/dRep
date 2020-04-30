@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+<title>dRep dereplicate Results</title>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" type="text/css">
+<script src="https://code.jquery.com/jquery-3.3.1.js"> </script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"> </script>
+<script src="https://cdn.datatables.net/colreorder/1.5.2/js/dataTables.colReorder.min.js"> </script>
+</head>
+<body>
+
+<h1>dRep dereplicate Results</h1>
+
+<h2>Command</h2>
+<code>
+CMD_TAG
+</code>	  
+<p><i>(Default parameters implicit)</i></p>
+
+<h2>Summary</h2>
+
+<p><i>Columns drag and drop</i></p>
+<table id="summary" class="display" width="100%"></table>
+
+
+
+
+
+
+
+<h2>Figures</h2>
+
+<p>
+FIGURES_TAG
+</p>
+
+
+
+
+
+
+
+<h2>Warnings</h2>
+<p>
+WARNINGS_TAG
+</p>
+
+
+</body>
+<script>
+var dataset = 
+JSON_TAG
+;
+var columnset = 
+COLUMNS_TAG
+;
+$(document).ready(function() {
+$('#summary').DataTable( {
+data: dataset,
+columns: columnset,
+colReorder: true
+} );
+} );
+</script>
+</html>

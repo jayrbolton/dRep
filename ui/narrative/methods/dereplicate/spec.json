@@ -1,0 +1,530 @@
+{
+    "ver": "1.0.0",
+    "authors": [
+        "suminw"
+    ],
+    "contact": "help@kbase.us",
+    "categories": ["active"],
+    "widgets": {
+        "input": null,
+        "output": "no-display"
+    },
+    "parameter-groups": [
+        {
+	    "id": "filtering",
+	    "parameters": [
+	        "length",
+            "completeness",
+            "contamination",
+            "ignoreGenomeQuality"
+            ],
+	    "optional": false,
+	    "advanced": true,
+	    "allow_multiple": false,
+	    "with_border": true
+	},{
+	    "id": "genome_comparison",
+	    "parameters": [
+            "MASH_sketch",
+            "S_algorithm",
+            "n_PRESET"
+            ],
+	    "optional": false,
+	    "advanced": true,
+	    "allow_multiple": false,
+	    "with_border": true
+	},{
+	    "id": "clustering",
+	    "parameters": [
+            "P_ani",
+            "S_ani",
+            "SkipMash",
+            "SkipSecondary",
+            "cov_thresh",
+            "coverage_method",
+            "clusterAlg"
+            ],
+	    "optional": false,
+	    "advanced": true,
+	    "allow_multiple": false,
+	    "with_border": true
+	},{
+	    "id": "scoring",
+	    "parameters": [
+            "completeness_weight",
+            "contamination_weight",
+            "strain_heterogeneity_weight",
+            "N50_weight",
+            "size_weight"
+            ],
+	    "optional": false,
+	    "advanced": true,
+	    "allow_multiple": false,
+	    "with_border": true
+	},{
+	    "id": "warnings",
+	    "parameters": [
+            "warn_dist",
+            "warn_sim",
+            "warn_aln"
+            ],
+	    "optional": false,
+	    "advanced": true,
+	    "allow_multiple": false,
+	    "with_border": true
+	}
+
+    ],
+    "parameters": [ 
+        {
+            "id": "genomes_refs",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": true,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": ["KBaseMetagenomes.BinnedContigs" ]
+		}
+        },{
+            "id": "length",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "50000" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "int",
+		    "min_int": "0"
+		}
+        },{
+            "id": "completeness",
+            "optional": true,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "75" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "float",
+		    "min_float": "0",
+		    "max_float": "100"
+		}
+        },{
+            "id": "contamination",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "25" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "float",
+		    "min_float": "0",
+		    "max_float": "100"
+		}
+        },{
+            "id": "ignoreGenomeQuality",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "False" ],
+            "field_type": "dropdown",
+	    "dropdown_options": {
+		    "options": [
+			 {
+			    "value": "True",
+			    "display": "True",
+			    "id": "True",
+			    "ui-name": "True"
+			 },{
+			    "value": "False",
+			    "display": "False",
+			    "id": "False",
+			    "ui-name": "False"
+			 }
+		    ]
+	    }
+        },{
+            "id": "MASH_sketch",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "1000" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "int",
+		    "min_int": "1"
+		}
+        },{
+            "id": "S_algorithm",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "ANImf" ],
+            "field_type": "dropdown",
+	    "dropdown_options": {
+		    "options": [
+			 {
+			    "value": "ANImf",
+			    "display": "ANImf - (RECOMMENDED) Align whole genomes with nucmer; filter alignment; compare aligned regions",
+			    "id": "ANImf",
+			    "ui-name": "ANImf - (RECOMMENDED) Align whole genomes with nucmer; filter alignment; compare aligned regions"
+			 },{
+			    "value": "ANIn",
+			    "display": "ANIn - Align whole genomes with nucmer; compare aligned regions",
+			    "id": "ANIn",
+			    "ui-name": "ANIn - Align whole genomes with nucmer; compare aligned regions"
+			 },{
+			    "value": "gANI",
+			    "display": "gANI - Identify and align ORFs; compare aligned ORFS",
+			    "id": "gANI",
+			    "ui-name": "gANI - Identify and align ORFs; compare aligned ORFS"
+			 },{
+			    "value": "goANI",
+			    "display": "goANI",
+			    "id": "goANI",
+			    "ui-name": "goANI"
+			 }
+
+		    ]
+	    }
+
+        },{
+            "id": "n_PRESET",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "normal" ],
+            "field_type": "dropdown",
+	    "dropdown_options": {
+		    "options": [
+			 {
+			    "value": "normal",
+			    "display": "normal",
+			    "id": "normal",
+			    "ui-name": "normal - default ANIn parameters"
+			 },{
+			    "value": "tight",
+			    "display": "tight",
+			    "id": "tight",
+			    "ui-name": "tight - only align highly conserved regions"
+			 }
+		    ]
+	    }
+
+        },{
+            "id": "P_ani",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0.9" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "float",
+		    "min_float": "0",
+		    "max_float": "1"
+		}
+        },{
+            "id": "S_ani",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0.99" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "float",
+		    "min_float": "0",
+		    "max_float": "1"
+		}
+        },{
+            "id": "SkipMash",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "False" ],
+            "field_type": "dropdown",
+	    "dropdown_options": {
+		    "options": [
+			 {
+			    "value": "True",
+			    "display": "True",
+			    "id": "True",
+			    "ui-name": "True"
+			 },{
+			    "value": "False",
+			    "display": "False",
+			    "id": "False",
+			    "ui-name": "False"
+			 }
+		    ]
+	    }
+
+        },{
+            "id": "SkipSecondary",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "False" ],
+            "field_type": "dropdown",
+	    "dropdown_options": {
+		    "options": [
+			 {
+			    "value": "True",
+			    "display": "True",
+			    "id": "True",
+			    "ui-name": "True"
+			 },{
+			    "value": "False",
+			    "display": "False",
+			    "id": "False",
+			    "ui-name": "False"
+			 }
+		    ]
+	    }
+
+        },{
+            "id": "cov_thresh",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0.1" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "float",
+		    "min_float": "0",
+		    "max_float": "1"
+		}
+        },{
+            "id": "coverage_method",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "larger" ],
+            "field_type": "dropdown",
+	    "dropdown_options": {
+		    "options": [
+			 {
+			    "value": "total",
+			    "display": "total",
+			    "id": "total",
+			    "ui-name": "total - 2 * (aligned length) / (sum of total genome lengths)"
+			 },{
+			    "value": "larger",
+			    "display": "larger",
+			    "id": "larger",
+			    "ui-name": "larger - max((aligned length / genome1), (aligned_length / genome2))"
+			 }
+		    ]
+	    }
+
+        },{
+            "id": "clusterAlg",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "average" ],
+            "field_type": "dropdown",
+	    "dropdown_options": {
+		    "options": [
+			 {
+			    "value": "single",
+			    "display": "single",
+			    "id": "single",
+			    "ui-name": "single"
+			 },{
+			    "value": "complete",
+			    "display": "complete",
+			    "id": "complete",
+			    "ui-name": "complete"
+			 },{
+			    "value": "average",
+			    "display": "average",
+			    "id": "average",
+			    "ui-name": "average"
+			 },{
+			    "value": "weighted",
+			    "display": "weighted",
+			    "id": "weighted",
+			    "ui-name": "weighted"
+			 },{
+			    "value": "centroid",
+			    "display": "centroid",
+			    "id": "centroid",
+			    "ui-name": "centroid"
+			 },{
+			    "value": "median",
+			    "display": "median",
+			    "id": "median",
+			    "ui-name": "median"
+			 },{
+			    "value": "ward",
+			    "display": "ward",
+			    "id": "ward",
+			    "ui-name": "ward"
+			 }
+		    ]
+	    }
+        },{
+            "id": "completeness_weight",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "1" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "float"
+		}
+        },{
+            "id": "contamination_weight",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "5" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "float"
+		}
+        },{
+            "id": "strain_heterogeneity_weight",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "1" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "float"
+		}
+        },{
+            "id": "N50_weight",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0.5" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "float"
+		}
+        },{
+            "id": "size_weight",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "float"
+		}
+        },{
+            "id": "warn_dist",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0.25" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "float",
+		    "min_float": "0",
+		    "max_float": "1"
+		}
+        },{
+            "id": "warn_sim",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0.98" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "float",
+		    "min_float": "0",
+		    "max_float": "1"
+		}
+        },{
+            "id": "warn_aln",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0.25" ],
+            "field_type": "text",
+            "text_options": {
+		    "validate_as": "float",
+		    "min_float": "0",
+		    "max_float": "1"
+		}
+        },{
+            "id": "checkM_method",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "lineage_wf" ],
+            "field_type": "dropdown",
+	    "dropdown_options": {
+		    "options": [
+			 {
+			    "value": "taxonomy_wf",
+			    "display": "taxonomy_wf",
+			    "id": "taxonomy_wf",
+			    "ui-name": "taxonomy_wf - faster"
+			 },{
+			    "value": "lineage_wf",
+			    "display": "lineage_wf",
+			    "id": "lineage_wf",
+			    "ui-name": "lineage_wf - more accurate"
+			 }
+		    ]
+	    }
+
+        }
+
+    ],
+    "behavior": {
+        "service-mapping": {
+            "url": "",
+            "name": "dRep",
+            "method": "dereplicate",
+            "input_mapping": [
+                {
+                    "narrative_system_variable": "workspace",
+                    "target_property": "workspace_name"
+                },{
+                    "narrative_system_variable": "workspace_id",
+                    "target_property": "workspace_id"
+                },{
+                    "input_parameter": "filtering",
+                    "target_property": "filtering"
+                },{
+                    "input_parameter": "genome_comparison",
+                    "target_property": "genome_comparison"
+                },{
+                    "input_parameter": "clustering",
+                    "target_property": "clustering"
+                },{
+                    "input_parameter": "scoring",
+                    "target_property": "scoring"
+                },{
+                    "input_parameter": "warnings",
+                    "target_property": "warnings"
+                },{
+                    "input_parameter": "genomes_refs",
+                    "target_property": "genomes_refs",
+		    "target_type_transform": "list<ref>"
+                },{
+                    "input_parameter": "checkM_method",
+                    "target_property": "checkM_method"
+                }
+            ],
+            "output_mapping": [
+                {
+                    "service_method_output_path": [0,"report_name"],
+                    "target_property": "report_name"
+                },{
+                    "service_method_output_path": [0,"report_ref"],
+                    "target_property": "report_ref"
+                },{
+                    "service_method_output_path": [0, "binned_contig_obj_ref"],
+                    "target_property": "binned_contig_obj_ref"
+                }
+
+            ]
+        }
+    },
+    "job_id_output_field": "docker"
+}
